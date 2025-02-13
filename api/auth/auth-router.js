@@ -20,7 +20,7 @@ router.post('/register', (req, res, next) => {
   User.findBy({ username: user.username })
     .then(existingUser => {
       if (existingUser) {
-         return res.status(409).json({ message: 'username taken' }) 
+         return res.status(400).json({ message: 'username taken' }) 
       } 
     })
 
