@@ -3,7 +3,7 @@ const router = require('express').Router();
 const restricted = require('../middleware/restricted');
 const jokes = require('./jokes-data');
 
-router.get('/', restricted, (req, res) => {
+router.get('/', (req, res) => {
   res.status(200).json(jokes);
 });
 
