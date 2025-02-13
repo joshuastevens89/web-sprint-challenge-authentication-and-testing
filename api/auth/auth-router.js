@@ -12,13 +12,30 @@ const { JWT_SECRET, BCRYPT_ROUNDS } = require("../config/index");
 router.post('/register', (req, res, next) => {
   let user = req.body;
 
+  if (!user.username || !user.password) {
+     return res.status(400).json({ message: 'username and password required' })
+  }
+    
+
+  User.findBy({ username: user.username })
+    .then(existingUser => {
+      if (existingUser) {
+         return res.status(409).json({ message: 'username taken' }) 
+      } 
+    })
+
+
   const hash = bcrypt.hashSync(user.password, BCRYPT_ROUNDS);
 
-  user.password = hash;
+ const newUser = { username: user.username, password: hash }  
   
-  User.add(user)
+  User.add(newUser)
     .then(saved => {
-      res.status(201).json(saved)
+      res.status(201).json({
+        id: saved.id,
+        username: saved.username,
+        password: saved.password
+      })
     })
     .catch(next)      
 
@@ -47,10 +64,13 @@ router.post('/register', (req, res, next) => {
     4- On FAILED registration due to the `username` being taken,
       the response body should include a string exactly as follows: "username taken".
   */
-});
-
+})
 router.post('/login', (req, res, next) => {
   let { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ message: 'username and password required' })
+  }
 
   User.findBy({ username })
     .then(([user]) => {
