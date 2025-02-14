@@ -22,7 +22,7 @@ router.post('/register', (req, res, next) => {
       if (existingUser) {
          return res.status(400).json({ message: 'username taken' }) 
       } 
-    })
+    
 
 
   const hash = bcrypt.hashSync(user.password, BCRYPT_ROUNDS);
@@ -37,7 +37,10 @@ router.post('/register', (req, res, next) => {
         password: saved.password
       })
     })
-    .catch(next)      
+    .catch(next)   
+    })
+    .catch(next) 
+  
 
   /*
     IMPLEMENT
