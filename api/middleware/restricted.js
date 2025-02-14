@@ -4,15 +4,13 @@ const restricted = (req, res, next) => {
   const token = req.headers.authorization;
 
   if (token) {
-    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+    jwt.verify(token, process.env.JWT_SECRET || "secret", (err, decodedToken) => {
       if (err) {
         return res.status(401).json({ message: 'token invalid' });
       } else {
         req.decodedJwt = decodedToken;
         console.log('decoded token', decodedToken);
-        
-
-  next()
+        next()
       }
     })
   } else {  

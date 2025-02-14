@@ -84,7 +84,7 @@ router.post('/login', (req, res, next) => {
           token,
         })
       } else {
-        next({ status: 401, message: 'invalid credentials' })
+       return res.status(401).json({ message: 'invalid credentials' })
       }
     })
     .catch(next)
