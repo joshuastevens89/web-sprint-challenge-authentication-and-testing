@@ -27,7 +27,7 @@ router.post('/register', (req, res, next) => {
 
   const hash = bcrypt.hashSync(user.password, BCRYPT_ROUNDS);
 
- const newUser = {id: user.id, username: user.username, password: hash }  
+ const newUser = { username: user.username, password: hash }  
   
   User.add(newUser)
     .then(saved => {
